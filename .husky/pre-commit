@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged on staged files
+pnpm exec lint-staged
+
+# Run type checking on entire codebase
+pnpm run type-check
