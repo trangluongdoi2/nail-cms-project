@@ -31,6 +31,7 @@ export default [
         parser: parserTypeScript,
         extraFileExtensions: ['.vue'],
       },
+      globals: { ...globals.browser },
     },
     rules: {
       'vue/multi-word-component-names': 'off',
