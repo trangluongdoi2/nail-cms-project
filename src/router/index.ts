@@ -31,25 +31,45 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             path: '',
-            name: 'CalendarList',
+            name: 'calendar',
             component: () => import('../views/calendar/CalendarList.vue'),
           },
           {
             path: ':id',
-            name: 'CalendarDetail',
+            name: 'calendar-detail',
             component: () => import('../views/calendar/CalendarDetail.vue'),
           },
         ],
       },
       {
+        path: 'appointments',
+        name: 'appointments',
+        component: () => import('../views/appointments/index.vue'),
+      },
+      {
+        path: 'reports',
+        name: 'reports',
+        component: () => import('../views/reports/index.vue'),
+      },
+      {
         path: 'staff',
-        name: 'Staff',
+        name: 'staff',
         component: () => import('../views/staff/index.vue'),
       },
       {
         path: 'staff/create',
         name: 'staff-create',
         component: () => import('../views/staff/StaffCreate.vue'),
+      },
+      {
+        path: 'staff/:id',
+        name: 'staff-detail',
+        component: () => import('../views/staff/StaffDetail.vue'),
+      },
+      {
+        path: 'staff/:id/edit',
+        name: 'staff-edit',
+        component: () => import('../views/staff/StaffEdit.vue'),
       },
       {
         path: 'settings',

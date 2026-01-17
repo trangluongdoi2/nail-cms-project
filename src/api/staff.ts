@@ -1,25 +1,33 @@
-import { IPaginatedResponse, IPaginationParams, IResponse } from '@/types/api'
+import { IPaginationParams } from '@/types/api'
 import { Staff } from '@/types/staff'
 import { BaseApi } from './baseApi'
 
-export default class StaffApi extends BaseApi {
-  getAll(params?: IPaginationParams) {
-    return this.get<IPaginatedResponse<Staff>>('/staffs', { params })
+export interface StaffFilterParams extends IPaginationParams {
+  search?: string
+  role?: string
+  is_active?: boolean
+}
+
+class StaffApi extends BaseApi {
+  getAll(params?: StaffFilterParams) {
+    return this.getList<Staff>('/staffs', params)
   }
 
   getById(id: string) {
-    return this.get<IResponse<Staff>>(`/staffs/${id}`)
+    return this.get<Staff>(`/staffs/${id}`)
   }
 
   create(data: Partial<Staff>) {
-    return this.post<IResponse<Staff>>('/staffs', data)
+    return this.post<Staff>('/staffs', data)
   }
 
   update(id: string, data: Partial<Staff>) {
-    return this.put<IResponse<Staff>>(`/staffs/${id}`, data)
+    return this.put<Staff>(`/staffs/${id}`, data)
   }
 
   deleteStaff(id: string) {
-    return this.delete<IResponse<void>>(`/staffs/${id}`)
+    return this.delete<void>(`/staffs/${id}`)
   }
 }
+
+export default new StaffApi()

@@ -4,10 +4,13 @@
       <h1 class="text-2xl font-bold">Staff</h1>
       <el-button type="primary" @click="navigateToPageCreate">Add Staff Member</el-button>
     </div>
+    <StaffTable />
   </div>
 </template>
+
 <script setup lang="ts">
 import router from '@/router'
+import StaffTable from './StaffTable.vue'
 
 const navigateToPageCreate = () => {
   router.push({ name: 'staff-create' })

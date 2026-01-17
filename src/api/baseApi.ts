@@ -19,11 +19,25 @@ export interface IApi {
 export class BaseApi implements IApi {
   public async getList<T>(
     url: string,
-    input?: object,
+    params?: object,
     options?: AxiosRequestConfig<T>
   ): Promise<IPaginatedResponse<T>> {
-    let opts = { ...(options || {}) }
-    const { data } = await axiosInstance.get(url, opts)
+    let opts: AxiosRequestConfig = { ...(options || {}) }
+
+    let queryContent = ''
+    if (Object.keys(params || {})?.length) {
+      queryContent = Object.entries(params || {})
+        .map(([key, value]) => {
+          if (value != undefined) {
+            return `${key}=${value}`
+          }
+          return ''
+        })
+        .filter(Boolean)
+        .join('&')
+    }
+    const { data } = await axiosInstance.get(`${url}?${queryContent}`, opts)
+
     return {
       items: data.items,
       total: data.total,
@@ -34,51 +48,27 @@ export class BaseApi implements IApi {
   }
   public async get<T>(
     url: string,
-    input?: object,
+    params?: object,
     options?: AxiosRequestConfig<T>
   ): Promise<IResponse<T>> {
     let opts = { ...(options || {}) }
-    if (input) {
-      opts = {
-        ...opts,
-        params: input,
-      }
-    }
-    const { data } = await axiosInstance.get(url, opts)
-    return {
-      data,
-    }
+
+    return axiosInstance.get(url, opts)
   }
 
   public async post<T>(url: string, input?: object, options?: object): Promise<IResponse<T>> {
-    const { data } = await axiosInstance.post(url, input, options)
-    return {
-      data: data.data,
-      message: data.message,
-    }
+    return axiosInstance.post(url, input, options)
   }
 
   public async patch<T>(url: string, input?: object, options?: object): Promise<IResponse<T>> {
-    const { data } = await axiosInstance.patch(url, input, options)
-    return {
-      data: data.data,
-      message: data.message,
-    }
+    return axiosInstance.patch(url, input, options)
   }
 
   public async put<T>(url: string, input?: object, options?: object): Promise<IResponse<T>> {
-    const { data } = await axiosInstance.put(url, input, options)
-    return {
-      data: data.data,
-      message: data.message,
-    }
+    return axiosInstance.put(url, input, options)
   }
 
   public async delete<T>(url: string, input?: object): Promise<IResponse<T>> {
-    const { data } = await axiosInstance.delete(url, input)
-    return {
-      data: data.data,
-      message: data.message,
-    }
+    return axiosInstance.delete(url, input)
   }
 }

@@ -9,7 +9,6 @@ import router from './router'
 const app = createApp(App)
 const pinia = createPinia()
 
-// Custom Element Plus theme to match Dribbble design
 const elementPlusTheme = {
   '--el-color-primary': '#5B4FF5',
   '--el-color-primary-light-3': '#7D72F7',
@@ -18,7 +17,6 @@ const elementPlusTheme = {
   '--el-font-family': 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif',
 }
 
-// Apply theme variables
 Object.entries(elementPlusTheme).forEach(([key, value]) => {
   document.documentElement.style.setProperty(key, value)
 })

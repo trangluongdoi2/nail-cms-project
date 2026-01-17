@@ -66,8 +66,6 @@ export const useAuthStore = defineStore('auth', {
       this.loading = true
       try {
         const response = await authApi.getCurrentUser()
-        console.log(response, 'response..')
-        console.log(response.data, 'response.data..')
         this.user = response.data
         return true
       } catch {

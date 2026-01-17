@@ -11,7 +11,7 @@
           v-if="!isCollapse"
           :icon="Fold"
           text
-          class="text-white/80 text-lg hover:text-white"
+          class="sidebar-collapse-btn text-lg"
           @click="toggleSidebar"
         />
       </div>
@@ -23,7 +23,7 @@
         router
         class="sidebar-menu"
       >
-        <el-menu-item index="/calendar">
+        <el-menu-item index="/calendar" class="test">
           <el-icon><Picture /></el-icon>
           <template #title>Calendar</template>
         </el-menu-item>
@@ -46,7 +46,7 @@
       </el-menu>
     </el-aside>
 
-    <el-container class="flex flex-1 flex-col bg-[#f5f5f7]">
+    <el-container class="flex flex-1 flex-col bg-background">
       <el-header class="header">
         <el-input
           v-if="!isCollapse"
@@ -67,14 +67,23 @@
         </div>
       </el-header>
 
-      <el-main class="overflow-y-auto bg-[#f5f5f7] p-8">
+      <el-main class="overflow-y-auto bg-background p-8">
         <router-view />
       </el-main>
     </el-container>
   </div>
 </template>
 <script setup lang="ts">
-import { Calendar, Expand, Fold, Picture, Search, Setting, User } from '@element-plus/icons-vue'
+import {
+  Calendar,
+  Expand,
+  Fold,
+  Picture,
+  Search,
+  Setting,
+  User,
+  Document,
+} from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 const isCollapse = ref<boolean>(false)
@@ -91,6 +100,15 @@ const toggleSidebar = () => {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
+:deep(.sidebar-collapse-btn) {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+:deep(.sidebar-collapse-btn:hover) {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
 .sidebar-menu {
   border-right: none;
   background: transparent;
@@ -102,7 +120,22 @@ const toggleSidebar = () => {
   width: 270px;
 }
 
-/* Element Plus menu item overrides */
+.sidebar-menu.el-menu--collapse {
+  padding: 12px 8px;
+}
+
+:deep(.el-menu--collapse .el-menu-item) {
+  display: flex;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+:deep(.el-menu--collapse .el-menu-tooltip__trigger) {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
 :deep(.el-menu-item) {
   height: 48px;
   line-height: 48px;
@@ -134,7 +167,6 @@ const toggleSidebar = () => {
   color: white;
 }
 
-/* Header - requires !important for Element Plus override */
 .header {
   background-color: white;
   display: flex;
@@ -145,7 +177,6 @@ const toggleSidebar = () => {
   height: 80px !important;
 }
 
-/* Search input Element Plus overrides */
 .search-input {
   width: 400px;
 }
@@ -161,7 +192,6 @@ const toggleSidebar = () => {
   font-size: 14px;
 }
 
-/* Avatar gradient - can't be done with Tailwind */
 .user-avatar {
   background: linear-gradient(135deg, #5b4ff5 0%, #7d72f7 100%);
   color: white;
