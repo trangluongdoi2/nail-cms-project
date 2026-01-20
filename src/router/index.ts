@@ -52,25 +52,45 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/reports/index.vue'),
       },
       {
-        path: 'staff',
-        name: 'staff',
+        path: 'staffs',
+        name: 'staffs',
         component: () => import('../views/staff/index.vue'),
       },
       {
-        path: 'staff/create',
+        path: 'staffs/create',
         name: 'staff-create',
         component: () => import('../views/staff/StaffCreate.vue'),
       },
       {
-        path: 'staff/:id',
+        path: 'staffs/:id',
         name: 'staff-detail',
         component: () => import('../views/staff/StaffDetail.vue'),
       },
       {
-        path: 'staff/:id/edit',
+        path: 'staffs/:id/edit',
         name: 'staff-edit',
         component: () => import('../views/staff/StaffEdit.vue'),
       },
+      {
+        path: 'services',
+        name: 'services',
+        component: () => import('../views/service-offering/index.vue'),
+      },
+      {
+        path: 'services/create',
+        name: 'service-create',
+        component: () => import('../views/service-offering/ServiceCreate.vue'),
+      },
+      // {
+      //   path: 'services/:id',
+      //   name: 'service-detail',
+      //   component: () => import('../views/staff/StaffDetail.vue'),
+      // },
+      // {
+      //   path: 'services/:id/edit',
+      //   name: 'service-edit',
+      //   component: () => import('../views/staff/StaffEdit.vue'),
+      // },
       {
         path: 'settings',
         name: 'Settings',

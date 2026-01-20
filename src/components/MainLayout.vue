@@ -31,9 +31,13 @@
           <el-icon><Calendar /></el-icon>
           <template #title>Appointments</template>
         </el-menu-item>
-        <el-menu-item index="/staff">
+        <el-menu-item index="/staffs">
           <el-icon><User /></el-icon>
           <template #title>Staff</template>
+        </el-menu-item>
+        <el-menu-item index="/services">
+          <el-icon><User /></el-icon>
+          <template #title>Service</template>
         </el-menu-item>
         <el-menu-item index="/reports">
           <el-icon><Document /></el-icon>
@@ -58,13 +62,31 @@
         <div v-else>
           <el-button :icon="Expand" text @click="toggleSidebar" />
         </div>
-        <div class="flex items-center gap-4">
-          <div class="text-right">
-            <div class="text-sm font-semibold text-gray-800 leading-snug">Admin User</div>
-            <div class="text-xs text-gray-500 leading-snug">Administrator</div>
+        <el-dropdown trigger="click" @command="handleCommand">
+          <div class="flex cursor-pointer items-center gap-4">
+            <div class="text-right">
+              <div class="text-sm font-semibold text-gray-800 leading-snug">Admin User</div>
+              <div class="text-xs text-gray-500 leading-snug">Administrator</div>
+            </div>
+            <el-avatar class="user-avatar" :size="40">A</el-avatar>
           </div>
-          <el-avatar class="user-avatar" :size="40">A</el-avatar>
-        </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="profile">
+                <el-icon class="mr-2"><User /></el-icon>
+                Profile
+              </el-dropdown-item>
+              <el-dropdown-item command="settings">
+                <el-icon class="mr-2"><Setting /></el-icon>
+                Settings
+              </el-dropdown-item>
+              <el-dropdown-item divided command="logout">
+                <el-icon class="mr-2"><SwitchButton /></el-icon>
+                Logout
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </el-header>
 
       <el-main class="overflow-y-auto bg-background p-8">
@@ -74,6 +96,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
 import {
   Calendar,
   Expand,
@@ -81,15 +104,33 @@ import {
   Picture,
   Search,
   Setting,
+  SwitchButton,
   User,
   Document,
 } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const isCollapse = ref<boolean>(false)
+const authStore = useAuthStore()
 
 const toggleSidebar = () => {
   isCollapse.value = !isCollapse.value
+}
+
+const handleCommand = (command: string) => {
+  switch (command) {
+    case 'profile':
+      router.push({ name: 'Settings' })
+      break
+    case 'settings':
+      router.push({ name: 'Settings' })
+      break
+    case 'logout':
+      authStore.logout()
+      break
+  }
 }
 </script>
 <style scoped>

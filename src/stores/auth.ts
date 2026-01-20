@@ -42,7 +42,7 @@ export const useAuthStore = defineStore('auth', {
         this.user = data.user
         localStorage.setItem('access_token', data.access_token)
         if (data.refresh_token) {
-          localStorage.setItem('refresh_tokenresh_token', data.refresh_token)
+          localStorage.setItem('refresh_token', data.refresh_token)
         }
         return true
       } catch {
@@ -53,10 +53,14 @@ export const useAuthStore = defineStore('auth', {
     },
 
     logout() {
-      this.user = null
-      this.token = null
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
+      const refreshToken = localStorage.getItem('refresh_token') || ''
+      authApi.logout(refreshToken).then(() => {
+        this.user = null
+        this.token = null
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        window.location.reload()
+      })
     },
 
     async fetchCurrentUser(): Promise<boolean> {

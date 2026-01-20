@@ -2,7 +2,7 @@
   <div v-loading="loading">
     <div class="mb-6 flex justify-between items-start">
       <div>
-        <h1 class="text-2xl font-bold">Staff Details</h1>
+        <h1 class="text-2xl font-bold">IStaff Details</h1>
         <p class="text-gray-600 mt-2">View staff member information</p>
       </div>
       <div class="flex gap-2">
@@ -78,7 +78,7 @@
       </div>
     </el-card>
 
-    <el-empty v-else-if="!loading" description="Staff member not found" />
+    <el-empty v-else-if="!loading" description="IStaff member not found" />
   </div>
 </template>
 
@@ -87,7 +87,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ArrowLeft, Edit } from '@element-plus/icons-vue'
-import type { Staff } from '@/types/staff'
+import type { IStaff } from '@/types/staff'
 import StaffApi from '@/api/staff'
 import { formatDate } from '@/utils/date'
 
@@ -95,7 +95,7 @@ const route = useRoute()
 const router = useRouter()
 
 const loading = ref<boolean>(false)
-const staff = ref<Staff | null>(null)
+const staff = ref<IStaff | null>(null)
 
 const getInitials = (firstName: string, lastName: string) => {
   return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()

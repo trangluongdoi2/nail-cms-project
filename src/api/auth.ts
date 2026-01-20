@@ -17,10 +17,10 @@ export default class AuthApi extends BaseApi {
   }
 
   refreshToken(refreshToken: string): Promise<IResponse<LoginResponse>> {
-    return axiosInstance.post('/auth/refresh', { refreshToken })
+    return this.post('/auth/refresh', { refresh_token: refreshToken })
   }
 
-  logout(): Promise<IResponse<void>> {
-    return this.post<void>('/auth/logout', {})
+  logout(refreshToken: string): Promise<IResponse<void>> {
+    return this.post<void>('/auth/logout', { refresh_token: refreshToken })
   }
 }

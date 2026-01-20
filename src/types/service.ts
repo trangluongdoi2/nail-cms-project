@@ -1,12 +1,11 @@
-export interface Service {
+export interface IService {
   id: string
   name: string
   description?: string
   duration: number
   price: number
   category: string
-  isActive: boolean
-  imageUrl?: string
+  is_active: boolean
   createdAt: string
   updatedAt: string
 }

@@ -2,7 +2,7 @@
   <div v-loading="fetchLoading">
     <div class="mb-6 flex justify-between">
       <div>
-        <h1 class="text-2xl font-bold">Edit Staff Member</h1>
+        <h1 class="text-2xl font-bold">Edit IStaff Member</h1>
         <p class="text-gray-600 mt-2">Update staff member information</p>
       </div>
       <div>
@@ -56,7 +56,7 @@
       </el-form>
     </el-card>
 
-    <el-empty v-else-if="!fetchLoading" description="Staff member not found" />
+    <el-empty v-else-if="!fetchLoading" description="IStaff member not found" />
   </div>
 </template>
 
@@ -66,7 +66,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ArrowLeft } from '@element-plus/icons-vue'
-import type { Staff } from '@/types/staff'
+import type { IStaff } from '@/types/staff'
 import StaffApi from '@/api/staff'
 
 interface StaffForm {
@@ -83,7 +83,7 @@ const router = useRouter()
 const formRef = ref<FormInstance>()
 const fetchLoading = ref<boolean>(false)
 const submitLoading = ref<boolean>(false)
-const staff = ref<Staff | null>(null)
+const staff = ref<IStaff | null>(null)
 
 const staffForm = reactive<StaffForm>({
   first_name: '',
@@ -150,7 +150,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       try {
         const id = route.params.id as string
         await StaffApi.update(id, staffForm)
-        ElMessage.success('Staff member updated successfully')
+        ElMessage.success('IStaff member updated successfully')
         router.push({ name: 'staff-detail', params: { id } })
       } catch (error) {
         console.error('Failed to update staff:', error)

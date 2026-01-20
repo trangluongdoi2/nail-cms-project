@@ -3,7 +3,7 @@
     <div class="mb-4 flex items-center gap-4">
       <el-input
         v-model="searchQuery"
-        placeholder="Search by name or email..."
+        placeholder="Search by name..."
         clearable
         class="w-80"
         @clear="handleSearch"
@@ -25,31 +25,32 @@
       </el-select>
     </div>
 
-    <el-table v-loading="loading" :data="staffList" stripe class="w-full">
-      <el-table-column label="Staff Member" min-width="250">
+    <el-table v-loading="loading" :data="serviceList" stripe class="w-full">
+      <el-table-column label="Name" min-width="250">
         <template #default="{ row }">
           <div class="flex items-center gap-3">
-            <el-avatar :size="40" :src="row.image_url">
-              {{ getInitials(row.first_name, row.last_name) }}
-            </el-avatar>
-            <div>
-              <div class="font-medium">{{ row.first_name }} {{ row.last_name }}</div>
-              <div class="text-sm text-gray-500">{{ row.email }}</div>
-            </div>
+            <span>{{ row.name }}</span>
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column prop="phone" label="Phone" width="150" />
-
-      <el-table-column prop="specialties" label="Specialties" min-width="200">
+      <el-table-column label="Code" min-width="250">
         <template #default="{ row }">
-          <div v-if="row.specialties?.length" class="flex flex-wrap gap-1">
-            <el-tag v-for="specialty in row.specialties" :key="specialty" size="small" type="info">
-              {{ specialty }}
-            </el-tag>
+          <div class="flex items-center gap-3">
+            <span>{{ row.code }}</span>
           </div>
-          <span v-else class="text-gray-400">-</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="price" label="Price" min-width="200">
+        <template #default="{ row }">
+          <span>{{ row.price }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="specialties" label="Duration" min-width="200">
+        <template #default="{ row }">
+          <span>{{ row.duration }}</span>
         </template>
       </el-table-column>
 
@@ -81,8 +82,8 @@
         :total="pagination.total"
         :page-sizes="[10, 20, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper"
-        @size-change="fetchStaffList"
-        @current-change="fetchStaffList"
+        @size-change="fetchServiceList"
+        @current-change="fetchServiceList"
       />
     </div>
   </div>
@@ -92,16 +93,16 @@
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
-import type { IStaff } from '@/types/staff'
-import StaffApi from '@/api/staff'
+// import { useRouter } from 'vue-router'
+import type { IService } from '@/types/service'
+import ServiceApi from '@/api/services'
 
-const router = useRouter()
+// const router = useRouter()
 
 const loading = ref(false)
 const searchQuery = ref('')
 const statusFilter = ref('')
-const staffList = ref<IStaff[]>([])
+const serviceList = ref<IService[]>([])
 
 const pagination = reactive({
   page: 1,
@@ -109,20 +110,18 @@ const pagination = reactive({
   total: 0,
 })
 
-const getInitials = (firstName: string, lastName: string) => {
-  return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()
-}
-
-const fetchStaffList = async () => {
+const fetchServiceList = async () => {
   loading.value = true
   try {
-    const response = await StaffApi.getAll({
+    const response = await ServiceApi.getAll({
       page: pagination.page,
       limit: pagination.limit,
       search: searchQuery.value || undefined,
       is_active: statusFilter.value ? statusFilter.value === 'true' : undefined,
     })
-    staffList.value = response.items
+    console.log(response, 'response..')
+    console.log(response.items, 'response.items...')
+    serviceList.value = response.items
     pagination.total = response.total
   } catch (error) {
     console.error('Failed to fetch staff list:', error)
@@ -134,28 +133,24 @@ const fetchStaffList = async () => {
 
 const handleSearch = () => {
   pagination.page = 1
-  fetchStaffList()
+  fetchServiceList()
 }
 
-const handleEdit = (row: IStaff) => {
-  router.push({ name: 'staff-edit', params: { id: row.id } })
+const handleEdit = (row: IService) => {
+  // router.push({ name: 'service-edit', params: { id: row.id } })
 }
 
-const handleDelete = async (row: IStaff) => {
+const handleDelete = async (row: IService) => {
   try {
-    await ElMessageBox.confirm(
-      `Are you sure you want to delete ${row.first_name} ${row.last_name}?`,
-      'Confirm Delete',
-      {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`Are you sure you want to delete?`, 'Confirm Delete', {
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      type: 'warning',
+    })
 
-    await StaffApi.deleteStaff(row.id)
-    ElMessage.success('IStaff member deleted successfully')
-    fetchStaffList()
+    await ServiceApi.deleteService(row.id)
+    ElMessage.success('Staff member deleted successfully')
+    fetchServiceList()
   } catch (error) {
     if (error !== 'cancel') {
       console.error('Failed to delete staff:', error)
@@ -165,6 +160,6 @@ const handleDelete = async (row: IStaff) => {
 }
 
 onMounted(() => {
-  fetchStaffList()
+  fetchServiceList()
 })
 </script>
